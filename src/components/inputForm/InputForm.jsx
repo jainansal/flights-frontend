@@ -1,4 +1,5 @@
 import React from 'react'
+import './inputForm.scss'
 
 function InputForm(props) {
 
@@ -20,6 +21,9 @@ function InputForm(props) {
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
+        props.setWelcome(false);
+        props.setLoading(true);
+
         const response = await fetch('http://localhost:8000/api/flight', {
             mode:'cors',
             method: 'post',
@@ -28,39 +32,37 @@ function InputForm(props) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-                /*
-                    formData : {
-                        origin: String,
-                        destination: String,
-                        date: String
-                    }
-                */
         });
 
         const content = await response.json();
 
         props.setContent(content);
+        props.setLoading(false);
     }
 
     console.log(formData)
 
   return (
-    <form onSubmit={(ev) => handleSubmit(ev)}>
+    <form 
+        className='input-form'
+        onSubmit={(ev) => handleSubmit(ev)}>
         <input 
             type="text" 
             value={formData.origin}
             name='origin'
-            placeholder='Origin'
+            placeholder='Origin IATA'
             onChange={(ev) => handleChange(ev)}
             required={true}
+            maxLength={3}
         />
         <input 
             type="text" 
             value={formData.destination}
             name='destination'
-            placeholder='Destination'
+            placeholder='Destination IATA'
             onChange={(ev) => handleChange(ev)}
             required={true}
+            maxLength={3}
         />
         <input 
             type="date"
