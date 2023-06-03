@@ -24,7 +24,7 @@ function InputForm(props) {
         props.setWelcome(false);
         props.setLoading(true);
 
-        const response = await fetch('http://localhost:8000/api/flight', {
+        const response = await fetch('https://flights-backend.onrender.com', {
             mode:'cors',
             method: 'post',
             headers: {
